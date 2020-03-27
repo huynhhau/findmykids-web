@@ -1,0 +1,44 @@
+.notification {
+	color: white;
+	text-decoration: none;
+	position: relative;
+	display: inline-block;
+}
+
+.notification .badge {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 2px 4px;
+	border-radius: 20%;
+	background: red;
+	color: white;
+}
+
+html {
+	min-height: 100%;
+	margin: 0;
+}
+
+.full-height {
+	min-height: 100%;
+}
+
+.bgcard img {
+	opacity: 90%;
+	border: 0px;
+	border-radius: 0px;
+}
+
+.mybreadcrumb {
+	border: 0px;
+	border-radius: 0px;
+}
+
+* {
+	font-family: "Segoe UI"
+}
+
+.default {
+	min-height: 800px;
+}
