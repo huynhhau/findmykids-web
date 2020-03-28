@@ -60,7 +60,7 @@ axios.interceptors.request.use(function (config) {
   return Promise.reject(error);
 });
 
-Vue.config.errorHandler = function (err, vm, info) {
+Vue.config.errorHandler = function (err, vm) {
   vm.$bvToast.toast('Đã có lỗi xảy ra!', {
     title: `Thông báo lỗi!`,
     variant: 'danger',
