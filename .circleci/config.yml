@@ -4,20 +4,19 @@ jobs:
     docker:
       - image: circleci/node:12.13.0
     parallelism: 1
-    working_directory: ~/huynhhau/findmykids-web
-    
+    working_directory: ~/huynhhau/findmykids-web 
     steps:
       - checkout
       - attach_workspace:
           at: ~/huynhhau/findmykids-web
       - restore_cache:
-        key: v1-yarn-{{ checksum "yarn.lock" }}
-        - run: yarn install
+          key: v1-yarn-{{ checksum "yarn.lock" }}
+      - run: yarn install
       - save_cache:
-          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: v1-yarn-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
-      - run:  yarn build
+      - run: yarn build
       - persist_to_workspace:
           root: .
           paths: dist
