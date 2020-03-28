@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Deploy to S3
           command: |
-            s3deploy -source=dist/ -region=us-west-2 -bucket=findmykids
+            s3deploy -source=dist/ -region=ap-southeast-1 -bucket=findmykids
 
 workflows:
   version: 2
