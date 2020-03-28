@@ -4,11 +4,12 @@ jobs:
     docker:
       - image: circleci/node:12.13.0
     parallelism: 1
-    working_directory: ~/rossta/connect-four-vue
+    working_directory: ~/huynhhau/findmykids-web
+    
     steps:
       - checkout
       - attach_workspace:
-          at: ~/rossta/connect-four-vue
+          at: ~/huynhhau/findmykids-web
       - restore_cache:
           key: v1-yarn-{{ checksum "yarn.lock" }}
       - run: yarn install
@@ -25,11 +26,11 @@ jobs:
     docker:
       - image: circleci/golang:1.9.6
     parallelism: 1
-    working_directory: ~/rossta/connect-four-vue
+    working_directory: ~/huynhhau/findmykids-web
     steps:
       - checkout
       - attach_workspace:
-          at: ~/rossta/connect-four-vue
+          at: ~/huynhhau/findmykids-web
       - restore_cache:
           key: v1-pkg-cache
       - run: go get -v github.com/huynhhau/findmykids-web
@@ -40,7 +41,7 @@ jobs:
       - run:
           name: Deploy to S3
           command: |
-            s3deploy -source=dist/ -region=us-west-2 -bucket=rossta-connect-four
+            s3deploy -source=dist/ -region=us-west-2 -bucket=findmykids
 
 workflows:
   version: 2
