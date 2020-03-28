@@ -33,7 +33,7 @@ jobs:
           at: ~/huynhhau/findmykids-web
       - restore_cache:
           key: v1-pkg-cache
-      - run: go get -v  go get -u -v github.com/bep/s3deploy
+      - run: go get -v github.com/bep/s3deploy
       - save_cache:
           key: v1-pkg-cache
           paths:
