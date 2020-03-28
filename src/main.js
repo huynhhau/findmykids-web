@@ -67,9 +67,9 @@ Vue.config.errorHandler = function (err, vm, info) {
   });
 
   // return [err, vm, info]
-  console.log(err)
-  console.log('---------------------')
-  console.log(err, vm, info);
+  // console.log(err)
+  // console.log('---------------------')
+  // console.log(err, vm, info);
   return Promise.reject(err);
 }
 

@@ -26,7 +26,7 @@ const state = {
 const actions = {
     async getListServiceRegister(context) {
         const results = await axios.get(membersManagerAPI);
-        console.log("getListServiceRegister -> results", results.data)
+        //console.log("getListServiceRegister -> results", results.data)
         context.commit("updateItems", results.data);
     },
 
