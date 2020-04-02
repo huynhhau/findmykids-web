@@ -4,7 +4,6 @@
             <h1 class="bv-no-focus-ring" tabindex="-1">
                 <span class="bd-content-title">Quản lý người đăng ký và giấy phép dịch vụ</span>
             </h1>
-
             <div>
                 <b-alert show variant="success">
                     <h4 class="alert-heading">Thống kê</h4>
@@ -54,7 +53,8 @@
                             </b-form-group>
                         </b-col>
                     </b-row>
-                    <b-row>
+
+                    <!-- <b-row>
                         <b-col lg="6" class="my-1">
                             <b-form-group
                                 label="Email"
@@ -75,7 +75,7 @@
                                 />
                             </b-form-group>
                         </b-col>
-                    </b-row>
+                    </b-row> -->
 
                     <b-row>
                         <b-col lg="6" class="my-1">
@@ -92,7 +92,7 @@
                             >
                                 <b-form-datepicker
                                     id="example-datepicker"
-                                    v-model="value33"
+                                    v-model="DateCreateFrom"
                                     class="mb-2"
                                 ></b-form-datepicker>
                             </b-form-group>
@@ -114,7 +114,7 @@
                             >
                                 <b-form-datepicker
                                     id="example-datepicker33"
-                                    v-model="value33"
+                                    v-model="DateCreateTo"
                                     class="mb-2"
                                 ></b-form-datepicker>
                             </b-form-group>
@@ -181,12 +181,14 @@
                             >
                                 <template v-slot:cell(state)="row">
                                     <b-form-checkbox
-                                        v-model="row.state"
+                                        v-model="row.item.state"
                                         button-variant="warning"
+                                        @input="updateStateClick(row.item.id, row.item.state)"
                                         switch
                                         size="lg"
                                     ></b-form-checkbox>
                                 </template>
+
                                 <template v-slot:cell(plans)="row">
                                     <b-button
                                         size="sm"
@@ -266,12 +268,11 @@
                     </b-row>
                     <b-row>
                         <b-col lg="12">
-                            <b-pagination
-                                v-show="hasData"
-                                v-model="currentPage"
-                                :total-rows="totalRows"
-                                :per-page="perPage"
-                            ></b-pagination>
+                            <b-pagination-nav
+                                :link-gen="linkGen"
+                                :number-of-pages="this.pageNum"
+                                use-router
+                            ></b-pagination-nav>
                         </b-col>
                     </b-row>
                 </div>
@@ -307,9 +308,12 @@ export default {
             ],
             licenses: [
                 { text: "Không sử dụng", value: 1 },
-                { text: "Có sử dụng và còn hạn", value: 0 },
-                { text: "Có sử dụng và hết hạn", value: 0 }
-            ]
+                { text: "Có sử dụng", value: 0 }
+                // { text: "Có sử dụng và còn hạn", value: 0 },
+                // { text: "Có sử dụng và hết hạn", value: 0 }
+            ],
+            license: "",
+            pageNum: 2
         };
     },
     computed: {
@@ -349,7 +353,22 @@ export default {
                 this.updateService(["Email", value]);
             }
         },
-
+        DateCreateFrom: {
+            get() {
+                return this.$store.state.service.service.DateCreateFrom;
+            },
+            set(value) {
+                this.updateService(["DateCreateFrom", value]);
+            }
+        },
+        DateCreateTo: {
+            get() {
+                return this.$store.state.service.service.DateCreateTo;
+            },
+            set(value) {
+                this.updateService(["DateCreateTo", value]);
+            }
+        },
         currentPage: {
             get() {
                 return this.currentPageTemp;
@@ -362,35 +381,79 @@ export default {
     methods: {
         ...mapMutations("loading", ["updateIsLoading"]),
         ...mapMutations("service", ["updateService", "updateCurrentPage"]),
-        ...mapActions("service", ["getListServiceRegister"]),
+        ...mapActions("service", ["getListServiceRegister", "updateState"]),
         async resetForm() {
             if (await msg_YN(this.$bvModal, "làm mới")) {
                 this.newForm();
+            }
+        },
+        async updateStateClick(id, state) {
+            try {
+                this.updateIsLoading(true);
+                const result = await this.updateState(id + "/" + state);
+                if (result.status == 200) {
+                    this.$bvToast.toast("Cập nhật trạng thái thành công!", {
+                        title: `Thông báo!`,
+                        variant: "success",
+                        autoHideDelay: 100
+                    });
+                }
+            } catch (error) {
+                throw new error();
+            } finally {
+                this.updateIsLoading(false);
             }
         },
         newForm() {
             this.updateService(["UserName", ""]);
             this.updateService(["FullName", ""]);
             this.updateService(["Email", ""]);
+            this.updateService(["DateCreateFrom", null]);
+            this.updateService(["DateCreateTo", null]);
+
             requestAnimationFrame(() => {
                 this.$refs.observer.reset();
             });
         },
         async submitForm() {
-            if (
-                this.UserName == "" &&
-                this.FullName == "" &&
-                this.Email == ""
-            ) {
-                // await this.getListServiceRegister();
+            try {
+                if (await msg_YN(this.$bvModal, "tìm kiếm")) {
+                    this.updateIsLoading(true);
+                    await this.getListServiceRegister(1);
+                    this.pageNum = this.totalRows / this.perPage;
+                    if (this.totalRows % this.perPage != 0) {
+                        this.pageNum += 1;
+                    }
+                }
+            } catch (error) {
+                throw new error();
+            } finally {
+                this.updateIsLoading(false);
             }
+        },
+        linkGen(pageNum) {
+            return pageNum === 1 ? "?" : `?page=${pageNum}`;
         }
     },
     async mounted() {
-        // this.newForm();
         this.updateIsLoading(true);
-        await this.getListServiceRegister();
+        await this.getListServiceRegister(1);
+        this.pageNum = this.totalRows / this.perPage;
+        if (this.totalRows % this.perPage != 0) {
+            this.pageNum += 1;
+        }
         this.updateIsLoading(false);
+    },
+    watch: {
+        async $route(to) {
+            this.updateIsLoading(true);
+            await this.getListServiceRegister(to.query.page);
+            this.pageNum = this.totalRows / this.perPage;
+            if (this.totalRows % this.perPage != 0) {
+                this.pageNum += 1;
+            }
+            this.updateIsLoading(false);
+        }
     }
 };
 </script>

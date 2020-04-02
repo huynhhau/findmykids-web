@@ -14,24 +14,29 @@ const state = {
     selectedvariant: "warning",
     hasData: true,
     totalRows: 1,
-    perPage: 10,
+    perPage: 15,
     service: {
         UserName: "",
         FullName: "",
         Email: "",
-        Page: 1
+        Page: 1,
+        DateCreateFrom: null,
+        DateCreateTo: null
     },
 }
 
 const actions = {
-    async getListServiceRegister(context) {
-        const results = await axios.get(membersManagerAPI);
-        //console.log("getListServiceRegister -> results", results.data)
+    async getListServiceRegister(context, page) {
+        const results = await axios.post(`${membersManagerAPI}?page=${page}`, { ...context.state.service });
+        
+        console.log("getListServiceRegister -> results", results.data);
         context.commit("updateItems", results.data);
     },
-
     async filterService(context, service, perPage) {
         await axios.post(membersManagerAPI, ...service, perPage)
+    },
+    async updateState(context, id) {
+        return await axios.post(`${membersManagerAPI}/updatestate/${id}`)
     }
 }
 
@@ -42,8 +47,8 @@ const mutations = {
         });
     },
     updateItems(state, items) {
-        state.items = items;
-        state.totalRows = items.length;
+        state.items = items.memberInfos;
+        state.totalRows = items.total;
     },
     updateCurrentPage(state, value) {
         state.currentPage = value;
@@ -60,6 +65,5 @@ export default {
     state,
     //getters,
     actions,
-    mutations,
-
+    mutations
 }

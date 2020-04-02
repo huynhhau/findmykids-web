@@ -12,7 +12,7 @@
                     </b-col>
                 </b-row>
 
-                <b-row>
+                <!-- <b-row>
                     <b-col lg="6" class="mx-auto">
                         <b-form-group
                             label="Tên đăng nhập"
@@ -23,6 +23,32 @@
                             <ValidationProvider
                                 rules="required"
                                 name="Tên đăng nhập"
+                                v-slot="{ valid, errors }"
+                            >
+                                <b-form-input
+                                    v-model.trim="UserName"
+                                    :state="errors[0] ? false : (valid ? true : null)"
+                                    maxlength="250"
+                                ></b-form-input>
+                                <b-form-invalid-feedback
+                                    :state="errors[0] ? false : (valid ? true : null)"
+                                >{{ errors[0] }}</b-form-invalid-feedback>
+                            </ValidationProvider>
+                        </b-form-group>
+                    </b-col>
+                </b-row>-->
+
+                <b-row>
+                    <b-col lg="6" class="mx-auto">
+                        <b-form-group
+                            label="Tên đăng nhập (Email)"
+                            label-cols-sm="4"
+                            label-align-sm="right"
+                            description="Bắt buộc nhập!"
+                        >
+                            <ValidationProvider
+                                rules="required|email"
+                                name="UserName"
                                 v-slot="{ valid, errors }"
                             >
                                 <b-form-input
@@ -119,7 +145,8 @@
                     </b-col>
                 </b-row>
 
-                <b-row>
+<!-- Đổi tên đăng nhập thành email 01.04.2020 -->
+                <!-- <b-row>
                     <b-col lg="6" class="mx-auto">
                         <b-form-group
                             label="Email"
@@ -143,7 +170,7 @@
                             </ValidationProvider>
                         </b-form-group>
                     </b-col>
-                </b-row>
+                </b-row> -->
 
                 <b-row>
                     <b-col lg="6" class="mx-auto">
@@ -213,7 +240,7 @@ export default {
     },
     computed: {
         ...mapState("register", {
-            siteKey: state => state.siteKey,
+            siteKey: state => state.siteKey
         }),
 
         UserName: {
@@ -240,14 +267,15 @@ export default {
                 this.updateObj(["RePassWord", value]);
             }
         },
-        Email: {
-            get() {
-                return this.$store.state.register.obj.Email;
-            },
-            set(value) {
-                this.updateObj(["Email", value]);
-            }
-        },
+        // Đổi tên đăng nhập thành email 01.04.2020
+        // Email: {
+        //     get() {
+        //         return this.$store.state.register.obj.Email;
+        //     },
+        //     set(value) {
+        //         this.updateObj(["Email", value]);
+        //     }
+        // },
         Name: {
             get() {
                 return this.$store.state.register.obj.Name;
@@ -310,7 +338,8 @@ export default {
             this.updateObj(["UserName", null]);
             this.updateObj(["PassWord", null]);
             this.updateObj(["RePassWord", null]);
-            this.updateObj(["Email", null]);
+            // Đổi tên đăng nhập thành email 01.04.2020
+            // this.updateObj(["Email", null]);
             this.updateObj(["Name", null]);
 
             requestAnimationFrame(() => {

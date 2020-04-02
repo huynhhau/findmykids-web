@@ -7,7 +7,8 @@ const state = {
         UserName: "",
         PassWord: "",
         RePassWord: "",
-        Email: "",
+        //Đổi tên đăng nhập thành email 01.04.2020
+        // Email: "", 
         Name: "",
         recaptchaToken: ""
     },

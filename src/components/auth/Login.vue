@@ -13,7 +13,7 @@
                         <b-form>
                             <b-form-group>
                                 <ValidationProvider
-                                    rules="required"
+                                    rules="required|email"
                                     name="Tên đăng nhập"
                                     v-slot="{ valid, errors }"
                                 >
