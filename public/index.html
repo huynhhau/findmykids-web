@@ -14,74 +14,7 @@
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
       Please enable it to continue.</strong>
   </noscript>
-  <div id="app"></div>
-  <!-- 
-    <script
-    src="https://www.paypal.com/sdk/js?client-id=AZougqOyKucRxBRb-R6xthxmwf6EyV9PjUUsSgA7BpvLHQ8MQ9JOcygThdXyIjRhXFnOU7uHJzi8INex&vault=true"
-    data-sdk-integration-source="button-factory">
-</script>
-<script>
-  paypal
-    .Buttons({
-      style: {
-        shape: "rect",
-        color: 'gold',
-        layout: "vertical",
-        label: 'subscribe',
-      },
-      createSubscription: function(data, actions) {
-        return actions.subscription.create({
-          plan_id: 'P-22X55209K5606000JLZ6CVMI'
-        });
-      },
-      onApprove: function(data, actions) {
-        alert("Đăng ký thành công");
-      }
-    })
-    .render("#paypal-button-container");
-</script>
-  
-
-  <script>
-    paypal.Buttons({
-        style: {
-            shape: 'rect',
-            color: 'gold',
-            layout: 'vertical',
-            label: 'subscribe',
-            
-        },
-        createSubscription: function(data, actions) {
-          return actions.subscription.create({
-            'plan_id': 'P-14662570TP554383DLZ5Y5UQ'
-          });
-        },
-        onApprove: function(data, actions) {
-          alert(data.subscriptionID);
-        }
-    }).render('#paypal-button-container-3t');
-  </script>
-  
-<script>
-  paypal.Buttons({
-      style: {
-          shape: 'rect',
-          color: 'gold',
-          layout: 'vertical',
-          label: 'subscribe',
-          
-      },
-      createSubscription: function(data, actions) {
-        return actions.subscription.create({
-          'plan_id': 'P-5PN06135VK478952TLZ5ZNPI'
-        });
-      },
-      onApprove: function(data, actions) {
-        alert("Đăng ký thành công");
-      }
-  }).render('#paypal-button-container-1y');
-</script> -->
-
+  <div id= "app"></div>
 </body>
 
 </html>

@@ -53,6 +53,11 @@ const routes = [
     component: () => import('../views/payment/PayThreeMoth.vue')
   },
 
+  {
+    path: '/payment/test',
+    name: 'PaymentForforever',
+    component: () => import('../views/payment/paymenttest.vue')
+  },
 
   
 ]
